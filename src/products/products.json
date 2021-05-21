@@ -1,0 +1,14 @@
+[
+  {
+    "name": "BAXA",
+    "description": "somthing shorter",
+    "brand": "nokia",
+    "image": "http://localhost:3001/images/productIamges/cu077pckoy2sftp.jpg",
+    "price": 100,
+    "category": "smartphones",
+    "review": [],
+    "createdOn": "2021-05-21T08:43:14.076Z",
+    "_id": "cu077pckoy2sftp",
+    "lastUpdatedOn": "2021-05-21T08:44:58.576Z"
+  }
+]
