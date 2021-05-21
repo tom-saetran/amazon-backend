@@ -36,10 +36,22 @@ reviewsRouter.post("/", reviewValidation, async (req, res, next) => {
     try {
         const reviews = await getReviews()
         const errors = validationResult(req)
+
         if (errors.isEmpty()) {
             const review = { ...req.body, _id: uniqid(), createdOn: new Date() }
             reviews.push(review)
             await writeReviews(reviews)
+            
+
+            const products = await getProducts()
+            const product = products.find(product => product._id === review.productId)
+            product.reviews.push(review)
+
+            const filteredProducts = products.filter(product => product._id !== review.productId)
+            filteredProducts.push(product)
+            
+            await writeProducts(filteredProducts)
+
             res.status(201).send(review)
         } else {
             next(createError(400, errors))

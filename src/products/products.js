@@ -12,6 +12,12 @@ productsRouter.get("/", async (req, res, next) => {
     try {
         const products = await getProducts()
 
+        if (req.query.category) {
+            const filteredProducts = products.filter(products => products.category.toLowerCase().includes(req.query.category.toLowerCase()))
+
+            filteredProducts.length > 0 ? res.status(200).send(filteredProducts) : next(createError(404, `No products with category: ${req.query.category}`))
+        }
+
         if (req.query.name) {
             const filteredProducts = products.filter(products => products.name.toLowerCase().includes(req.query.name.toLowerCase()))
 
