@@ -25,7 +25,6 @@ server.use(notFoundErrorHandler)
 server.use(catchAllErrorHandler)
 
 server.listen(port, () => {
-
     console.log("server running on port: ", port)
 })
 

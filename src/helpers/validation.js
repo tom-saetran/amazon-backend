@@ -8,6 +8,16 @@ export const productValidation = [
     body("category").exists().withMessage("Category is a mandatory field!")
 ]
 
+/*
+export const productValidation = [
+    body("name").exists().isString().notEmpty().withMessage("Error in field \"name\""),
+    body("description").exists().isString().notEmpty().withMessage("Error in field \"description\""),
+    body("brand").exists().isString().notEmpty().withMessage("Error in field \"brand\""),
+    body("price").exists().isNumeric().notEmpty().withMessage("Error in field \"price\""),
+    body("category").exists().isString().notEmpty().withMessage("Error in field \"category\"")
+]
+*/
+
 export const reviewValidation = [
     body("comment").exists().withMessage("comment is a mandatory field!"),
     body("rate").exists().isInt({min: 1, max: 5}).withMessage("Rate is a mandatory field and must be between 1-5!"),

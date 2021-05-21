@@ -1,23 +1,5 @@
 [
-  {
-    "name": "BAXA",
-    "description": "somthing shorter",
-    "brand": "nokia",
-    "image": "http://localhost:3001/images/productIamges/cu077pckoy2sftp.jpg",
-    "price": 100,
-    "category": "smartphones",
-    "reviews": [
-      {
-        "comment": "A good book bdsfgsdfgsdfgsfdgfdsgut definitely I doasdfasdfadsfasdfdasfnsdfgsdfg't like many parts of the plot",
-        "rate": 3,
-        "productId": "cu077pckoy2sftp",
-        "createdAt": "2019-08-01T12:46:45.895Z",
-        "_id": "cu07c28koy4whsd",
-        "createdOn": "2021-05-21T09:42:22.476Z"
-      }
-    ],
-    "createdOn": "2021-05-21T08:43:14.076Z",
-    "_id": "cu077pckoy2sftp",
-    "lastUpdatedOn": "2021-05-21T08:44:58.576Z"
-  }
+    { "name": "BAXA2", "description": "somthing shorter", "brand": "nokia", "image": "http://localhost:3001/images/productImages/cu077pckoy2sftp.jpg", "price": 100, "category": "smartphones", "reviews": [{ "comment": "A good book bdsfgsdfgsdfgsfdgfdsgut definitely I doasdfasdfadsfasdfdasfnsdfgsdfg't like many parts of the plot", "rate": 3, "productId": "cu077pckoy2sftp", "createdAt": "2019-08-01T12:46:45.895Z", "_id": "cu07c28koy4whsd", "createdOn": "2021-05-21T09:42:22.476Z" }], "createdOn": "2021-05-21T08:43:14.076Z", "_id": "cu077pckox2sftp", "lastUpdatedOn": "2021-05-21T08:44:58.576Z" },
+    { "name": "BAXA", "description": "somthing shorter", "brand": "nokia", "image": "http://localhost:3001/images/productImages/cu077pckoy2sftp.jpg", "price": 100, "category": "VANDALIZED!", "reviews": [{ "comment": "A good book bdsfgsdfgsdfgsfdgfdsgut definitely I doasdfasdfadsfasdfdasfnsdfgsdfg't like many parts of the plot", "rate": 3, "productId": "cu077pckoy2sftp", "createdAt": "2019-08-01T12:46:45.895Z", "_id": "cu07c28koy4whsd", "createdOn": "2021-05-21T09:42:22.476Z" }], "createdOn": "2021-05-21T08:43:14.076Z", "_id": "cu077pckoy2sftp", "lastUpdatedOn": "2021-05-21T11:03:54.764Z" },
+    { "name": "Lord myself", "description": "Lord himself of course.", "brand": "Lords INC", "price": 500, "category": "Lords and Minions", "_id": "g2pc5fwkoy9bckh", "createdOn": "2021-05-21T11:45:54.016Z", "reviews": [], "image": "http://localhost:3001/productImages/g2pc5fwkoy9bckh.png" }
 ]
