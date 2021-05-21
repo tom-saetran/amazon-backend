@@ -2,7 +2,7 @@ import fs from "fs-extra"
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
 
-const { readJSON, writeJSON, writeFile, createReadStream } = fs
+const { readJSON, writeJSON, writeFile } = fs
 
 const productImagesFolder = join(dirname(fileURLToPath(import.meta.url)), "../../public/images/productImages")
 const productsFile = join(dirname(fileURLToPath(import.meta.url)), "../products/products.json")

@@ -1,0 +1,19 @@
+[
+    { "_timeStamp": "2021-05-21T12:00:03.288Z", "method": "GET", "resource": "/products", "query": {}, "body": {}, "_id": "g2pc5f2gkoy9tjvd" },
+    { "_timeStamp": "2021-05-21T12:00:06.457Z", "method": "GET", "resource": "/products", "query": {}, "body": {}, "_id": "g2pc5f2gkoy9tmbd" },
+    { "_timeStamp": "2021-05-21T12:00:07.302Z", "method": "GET", "resource": "/products", "query": {}, "body": {}, "_id": "g2pc5f2gkoy9tmyu" },
+    { "_timeStamp": "2021-05-21T12:00:08.129Z", "method": "GET", "resource": "/products", "query": {}, "body": {}, "_id": "g2pc5f2gkoy9tnlt" },
+    { "_timeStamp": "2021-05-21T12:00:09.087Z", "method": "GET", "resource": "/products", "query": {}, "body": {}, "_id": "g2pc5f2gkoy9tocf" },
+    { "_timeStamp": "2021-05-21T12:00:13.731Z", "method": "POST", "resource": "/products", "query": {}, "body": { "name": "Lord myself", "description": "Lord himself of course.", "brand": "Lords INC", "price": 500, "category": "Lords and Minions" }, "_id": "g2pc5f2gkoy9trxf" },
+    { "_timeStamp": "2021-05-21T12:04:37.494Z", "method": "GET", "resource": "/reviews", "query": {}, "body": {}, "_id": "g2pc5byckoy9zfg7" },
+    { "_timeStamp": "2021-05-21T12:05:17.076Z", "method": "GET", "resource": "/reviews", "query": {}, "body": {}, "_id": "g2pc5byckoya09zo" },
+    { "_timeStamp": "2021-05-21T12:06:14.697Z", "method": "GET", "resource": "/reviews/cu0739skow4xu4g", "query": {}, "body": {}, "_id": "g2pc5byckoya1ig9" },
+    { "_timeStamp": "2021-05-21T12:06:55.445Z", "method": "POST", "resource": "/reviews", "query": {}, "body": {}, "_id": "g2pc5byckoya2dw5" },
+    { "_timeStamp": "2021-05-21T12:07:10.536Z", "method": "POST", "resource": "/reviews", "query": {}, "body": { "comment": "HELLO WORLD!" }, "_id": "g2pc5byckoya2pjc" },
+    { "_timeStamp": "2021-05-21T12:07:34.176Z", "method": "POST", "resource": "/reviews", "query": {}, "body": { "comment": "HELLO WORLD!", "rate": "i am not a number" }, "_id": "g2pc5byckoya37s0" },
+    { "_timeStamp": "2021-05-21T12:07:42.706Z", "method": "POST", "resource": "/reviews", "query": {}, "body": { "comment": "HELLO WORLD!", "rate": 666 }, "_id": "g2pc5byckoya3ecy" },
+    { "_timeStamp": "2021-05-21T12:07:52.273Z", "method": "POST", "resource": "/reviews", "query": {}, "body": { "comment": "HELLO WORLD!", "rate": 4 }, "_id": "g2pc5byckoya3lqp" },
+    { "_timeStamp": "2021-05-21T12:08:23.684Z", "method": "POST", "resource": "/reviews", "query": {}, "body": { "comment": "HELLO WORLD!", "rate": 4, "productId": "cu077pckoy2sftp" }, "_id": "g2pc5byckoya49z8" },
+    { "_timeStamp": "2021-05-21T12:08:28.819Z", "method": "GET", "resource": "/reviews", "query": {}, "body": {}, "_id": "g2pc5byckoya4dxv" },
+    { "_timeStamp": "2021-05-21T12:09:20.322Z", "method": "PUT", "resource": "/reviews/cu0739skow4xu4g", "query": {}, "body": {}, "_id": "g2pc5byckoya5hoi" }
+]

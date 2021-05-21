@@ -103,7 +103,7 @@ productsRouter.post("/:id/uploadImage", multer().single("productImage"), async (
             else {
                 await writeProductImages(req.params.id + path.extname(req.file.originalname), req.file.buffer)
                 const product = products.find(product => product._id === req.params.id)
-                product.image = `${req.protocol}://${req.get("host")}/productImages/${req.params.id}${path.extname(req.file.originalname)}`
+                product.image = `${req.protocol}://${req.get("host")}/images/productImages/${req.params.id}${path.extname(req.file.originalname)}`
                 result.push(product)
                 writeProducts(result)
                 res.status(200).send("Image uploaded successfully")

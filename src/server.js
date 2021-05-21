@@ -1,5 +1,7 @@
 import express from "express"
 import cors from "cors"
+import uniqid from "uniqid"
+import fs from "fs-extra"
 import listEndpoints from "express-list-endpoints"
 import productRoutes from "./products/products.js"
 import reviewRoutes from "./reviews/review.js"
@@ -15,6 +17,23 @@ const publicFolder = join(dirname(fileURLToPath(import.meta.url)), "../public/")
 server.use(cors())
 server.use(express.json())
 server.use(express.static(publicFolder))
+
+const logger = async (req, res, next) => {
+    const content = await fs.readJSON(join(dirname(fileURLToPath(import.meta.url)), "log.json"))
+    content.push({
+        _timeStamp: new Date(),
+        method: req.method,
+        resource: req.url,
+        query: req.query,
+        body: req.body,
+        _id: uniqid()
+    })
+
+    await fs.writeJSON(join(dirname(fileURLToPath(import.meta.url)), "log.json"), content)
+    next()
+}
+
+server.use(logger)
 
 server.use("/products", productRoutes)
 server.use("/reviews", reviewRoutes)
