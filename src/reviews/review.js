@@ -1,7 +1,7 @@
 import express from "express"
 import multer from "multer"
 import { getProducts, writeProducts, writeProductImages, getReviews, writeReviews } from "../helpers/files.js"
-import { reviewValidation } from "../products/validation.js"
+import { reviewValidation } from "../helpers/validation.js"
 import createError from "http-errors"
 import { validationResult } from "express-validator"
 import uniqid from "uniqid"
@@ -49,7 +49,7 @@ reviewsRouter.post("/", reviewValidation, async (req, res, next) => {
 
             const filteredProducts = products.filter(product => product._id !== review.productId)
             filteredProducts.push(product)
-            
+
             await writeProducts(filteredProducts)
 
             res.status(201).send(review)

@@ -1,7 +1,7 @@
 import express from "express"
 import multer from "multer"
 import { getProducts, writeProducts, writeProductImages } from "../helpers/files.js"
-import { productValidation } from "./validation.js"
+import { productValidation } from "../helpers/validation.js"
 import  createError  from "http-errors"
 import { validationResult } from "express-validator"
 import uniqid from "uniqid"
