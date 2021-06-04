@@ -4,7 +4,7 @@ import createError from "http-errors"
 const { Schema, model } = mongoose
 
 const ReviewSchema = new Schema(
-    {
+    {   productID: {type: Schema.Types.ObjectId, required: true},
         rate: { type: Number, min: 0, max: 5, required: true },
         comment: { type: String, required: true }
     },

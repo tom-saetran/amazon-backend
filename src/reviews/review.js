@@ -30,9 +30,9 @@ reviewRouter.get("/:id", async (req, res, next) => {
     }
 })
 
-reviewRouter.post("/", async (req, res, next) => {
+reviewRouter.post("/:id", async (req, res, next) => {
     try {
-        const entry = req.body
+        const entry = {...req.body, productID: req.params.id}
         const newUser = new ReviewModel(entry)
         const { _id } = await newUser.save()
         res.status(201).send(_id)
