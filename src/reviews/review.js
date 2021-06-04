@@ -33,8 +33,11 @@ reviewRouter.get("/:id", async (req, res, next) => {
 reviewRouter.post("/:id", async (req, res, next) => {
     try {
         const entry = {...req.body, productID: req.params.id}
-        const newUser = new ReviewModel(entry)
-        const { _id } = await newUser.save()
+        const review = new ReviewModel(entry)
+        const { _id } = await review.save()
+        
+        await ProductModel.findByIdAndUpdate(req.params.id, { $push: { reviews: _id } })
+        
         res.status(201).send(_id)
     } catch (error) {
         next(error)
@@ -55,9 +58,12 @@ reviewRouter.put("/:id", async (req, res, next) => {
     }
 })
 
-reviewRouter.delete("/:id", async (req, res, next) => {
+reviewRouter.delete("/:productId/:reviewId", async (req, res, next) => {
     try {
         const result = await ReviewModel.findByIdAndRemove(req.params.id, { useFindAndModify: false })
+
+        const updatedProduct = await blogModel.findOneAndUpdate({ _id: req.params.productId }, { $pull: { reviews: req.params.reviewId } }, { new: true })
+        
         if (result) res.status(200).send("Deleted")
         else createError(400, "ID not found")
     } catch (error) {
