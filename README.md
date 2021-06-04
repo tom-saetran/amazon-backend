@@ -1,2 +1,3 @@
 # amazon-backend
-m5-d5-team-challenge
+
+M6 Team Project - Backend

@@ -1,20 +1,19 @@
 import mongoose from "mongoose"
 import createError from "http-errors"
 
-const { Schema, Model } = mongoose
+const { Schema, model } = mongoose
 
 const ProductSchema = new Schema(
     {
         name: { type: String, required: true },
         description: { type: String, required: true },
         brand: { type: String, required: true },
-        imageUrl: { type: String, },
-        price: { type: Number, required: true},
-        reviews: [{type: Schema.Types.ObjectId, ref:"Review"}]
+        imageUrl: { type: String },
+        price: { type: Number, required: true },
+        reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }]
     },
-    {timestamps: true}
+    { timestamps: true }
 )
-
 
 ProductSchema.post("validate", (error, doc, next) => {
     if (error) {
@@ -31,11 +30,9 @@ ProductSchema.static("findproduct", async function (id) {
     return product
 })
 
-
 ProductSchema.static("getreviews", async function (id) {
     const reviews = await this.findById(id, { reviews: 1 }).populate("reviews")
     return reviews
 })
 
-
-export default new Model ("Product", ProductSchema)
+export default model("Product", ProductSchema)

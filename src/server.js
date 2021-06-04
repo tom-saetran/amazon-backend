@@ -1,38 +1,54 @@
 import express from "express"
 import cors from "cors"
-import uniqid from "uniqid"
-import fs from "fs-extra"
 import listEndpoints from "express-list-endpoints"
 import productRoutes from "./products/products.js"
 import reviewRoutes from "./reviews/review.js"
-import { badRequestErrorHandler, forbiddenErrorHandler, notFoundErrorHandler, catchAllErrorHandler } from "./helpers/errorHandlers.js"
-import { fileURLToPath } from "url"
-import { dirname, join } from "path"
+import {
+    badRequestErrorHandler,
+    forbiddenErrorHandler,
+    notFoundErrorHandler,
+    catchAllErrorHandler
+} from "./helpers/errorHandlers.js"
+
+import logModel from "./schema/log.js"
+import mongoose from "mongoose"
 
 const server = express()
-const port = 3001
+const port = process.env.PORT || 3001
 
-const publicFolder = join(dirname(fileURLToPath(import.meta.url)), "../public/")
-
-server.use(cors())
-server.use(express.json())
-server.use(express.static(publicFolder))
-
-const logger = async (req, res, next) => {
-    const content = await fs.readJSON(join(dirname(fileURLToPath(import.meta.url)), "log.json"))
-    content.push({
-        _timeStamp: new Date(),
-        method: req.method,
-        resource: req.url,
-        query: req.query,
-        body: req.body,
-        _id: uniqid()
-    })
-
-    await fs.writeJSON(join(dirname(fileURLToPath(import.meta.url)), "log.json"), content)
-    next()
+const whitelist = [process.env.FRONTEND_DEV_URL, process.env.FRONTEND_PROD_URL]
+const corsOptions = {
+    origin: (origin, next) => {
+        try {
+            if (whitelist.indexOf(origin) !== -1) {
+                next(null, true)
+            } else {
+                next(createError(400, "Cross-Site Origin Policy blocked your request"), true)
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
+server.use(cors(corsOptions))
+server.use(express.json())
+
+// ##### Global Middleware #####
+const logger = async (req, res, next) => {
+    try {
+        const entry = new logModel({
+            method: req.method,
+            query: req.query,
+            params: req.params,
+            body: req.body
+        })
+        await entry.save()
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
 server.use(logger)
 
 server.use("/products", productRoutes)
@@ -43,8 +59,9 @@ server.use(forbiddenErrorHandler)
 server.use(notFoundErrorHandler)
 server.use(catchAllErrorHandler)
 
-server.listen(port, () => {
-    console.log("server running on port: ", port)
+mongoose.connect("mongodb://localhost:27017/demobase", { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+    server.listen(port, () => {
+        console.table(listEndpoints(server))
+        console.log("server is running on port: ", port)
+    })
 })
-
-console.table(listEndpoints(server))
