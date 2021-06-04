@@ -12,11 +12,12 @@ import {
 
 import logModel from "./schema/log.js"
 import mongoose from "mongoose"
+import createError from "http-errors"
 
 const server = express()
 const port = process.env.PORT || 3001
 
-const whitelist = [process.env.FRONTEND_DEV_URL, process.env.FRONTEND_PROD_URL]
+const whitelist = [process.env.FRONTEND_DEV_URL, process.env.FRONTEND_PROD_URL, "bypass"]
 const corsOptions = {
     origin: (origin, next) => {
         try {

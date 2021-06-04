@@ -1,130 +1,74 @@
 import express from "express"
-import multer from "multer"
-import { getProducts, writeProducts, writeProductImages } from "../helpers/files.js"
-import { productValidation } from "../helpers/validation.js"
 import createError from "http-errors"
-import { validationResult } from "express-validator"
-import path from "path"
 import ProductModel from "./schema.js"
+import q2m from "query-to-mongo"
 
-const productsRouter = express.Router()
+const productRouter = express.Router()
 
-productsRouter.get("/", async (req, res, next) => {
+//Get All Products
+productRouter.get("/", async (req, res, next) => {
     try {
-        const products = await getProducts()
-        if (req.query.category) {
-            // ?category=filtered
-            const filteredProducts = products.filter(products =>
-                products.category.toLowerCase().includes(req.query.category.toLowerCase())
-            )
-            filteredProducts.length > 0
-                ? res.status(200).send(filteredProducts)
-                : next(createError(404, `No products with category: ${req.query.category}`))
-        }
-        if (req.query.name) {
-            // ?name=filtered
-            const filteredProducts = products.filter(products =>
-                products.name.toLowerCase().includes(req.query.name.toLowerCase())
-            )
-            filteredProducts.length > 0
-                ? res.status(200).send(filteredProducts)
-                : next(createError(404, `No products with title: ${req.query.name}`))
-        } else {
-            products.length > 0 ? res.send(products) : next(createError(404, "No products available!"))
-        }
+        const query = q2m(req.query)
+        const total = await ProductModel.countDocuments(query.criteria)
+        const limit = 5
+        const result = await ProductModel.find(query.criteria)
+            .sort(query.options.sort)
+            .skip(query.options.skip || 0)
+            .limit(query.options.limit && query.options.limit < limit ? query.options.limit : limit)
+            .populate("reviews")
+        res.status(200).send({ links: query.links("/reviews", total), total, result })
     } catch (error) {
         next(error)
     }
 })
 
-productsRouter.get("/:id", async (req, res, next) => {
+// Get product with ID
+productRouter.get("/:id", async (req, res, next) => {
     try {
-        const products = await getProducts()
-        const result = products.find(product => product._id === req.params.id)
-        result
-            ? res.status(200).send(result)
-            : next(createError(404, "Product not found, check your ID and try again!"))
+        const result = await ProductModel.findById(req.params.id).populate("reviews")
+        if (!result) createError(400, "id not found")
+        else res.status(200).send(result)
     } catch (error) {
         next(error)
     }
 })
 
-productsRouter.post("/", async (req, res, next) => {
+// Post new product
+productRouter.post("/", async (req, res, next) => {
     try {
-        const newProduct = await ProductModel.findproduct(req.params.id)
-
-        product ? res.send(product) : createError(400, "Error creating product, try again!")
+        const entry = req.body
+        const product = new ProductModel(entry)
+        const { _id } = await product.save()
+        res.status(201).send(_id)
     } catch (error) {
         next(error)
     }
 })
 
-productsRouter.put("/:id", productValidation, async (req, res, next) => {
+// Edit product with ID
+productRouter.put("/:id", async (req, res, next) => {
     try {
-        const products = await getProducts()
-        const result = products.filter(product => product._id !== req.params.id)
-        let me = products.find(product => product._id === req.params.id)
-        if (!me) next(createError(400, "id not found"))
-        else {
-            me = { ...me, ...req.body, lastUpdatedOn: new Date() }
-            const errors = validationResult(me)
-            if (errors.isEmpty()) {
-                result.push(me)
-                await writeProducts(result)
-                res.status(200).send(me)
-            } else {
-                next(createError(400, errors))
-            }
-        }
+        const result = await ProductModel.findByIdAndUpdate(
+            req.params.id,
+            { ...req.body, updatedAt: new Date() },
+            { runValidators: true, new: true, useFindAndModify: false }
+        )
+        if (result) res.status(200).send(result)
+        else createError(400, "ID not found")
     } catch (error) {
         next(error)
     }
 })
 
-productsRouter.delete("/:id", async (req, res, next) => {
+// Delete product with ID
+productRouter.delete("/:id", async (req, res, next) => {
     try {
-        const products = await getProducts()
-        const result = products.filter(product => product._id !== req.params.id)
-        if (!result) next(createError(400, "id does not match"))
-        else {
-            await writeProducts(result)
-            res.send("Deleted")
-        }
+        const result = await ProductModel.findByIdAndRemove(req.params.id, { useFindAndModify: false })
+        if (result) res.status(200).send("Deleted")
+        else createError(400, "ID not found")
     } catch (error) {
         next(error)
     }
 })
 
-productsRouter.post("/:id/uploadImage", multer().single("productImage"), async (req, res, next) => {
-    try {
-        if (!req.file) next(createError(400, "What file exactly?"))
-        else {
-            const products = await getProducts()
-            const result = products.filter(product => product._id !== req.params.id)
-            if (!result) next(createError(400, "id does not match"))
-            else {
-                await writeProductImages(req.params.id + path.extname(req.file.originalname), req.file.buffer)
-                const product = products.find(product => product._id === req.params.id)
-                product.image = `${req.protocol}://${req.get("host")}/images/productImages/${
-                    req.params.id
-                }${path.extname(req.file.originalname)}`
-                result.push(product)
-                writeProducts(result)
-                res.status(200).send("Image uploaded successfully")
-            }
-        }
-    } catch (error) {
-        next(error)
-    }
-})
-
-productsRouter.get("/:id/reviews", async (req, res, next) => {
-    try {
-        const products = await getProducts()
-        const result = products.find(product => product._id === req.params.id)
-        result ? res.status(200).send(result.reviews) : next(createError(404, "id does not match"))
-    } catch (error) {
-        next(error)
-    }
-})
-export default productsRouter
+export default productRouter
