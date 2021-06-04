@@ -1,7 +1,7 @@
 import express from "express"
 import shopModel from "./schema.js"
 
-const shoppingRouter = express.Router()
+const cartRouter = express.Router()
 
 cartRouter.post("/add", async (req, res, next) => {
     try {
