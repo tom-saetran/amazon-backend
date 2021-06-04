@@ -3,7 +3,7 @@ import shopModel from "./schema.js"
 
 const shoppingRouter = express.Router()
 
-shoppingRouter.post("/cart/add", async (req, res, next) => {
+cartRouter.post("/add", async (req, res, next) => {
     try {
         const shoppingcart = await shopModel(req.body)
         const check = await shopModel.findById(req.body._id)
@@ -20,7 +20,7 @@ shoppingRouter.post("/cart/add", async (req, res, next) => {
     }
 })
 
-shoppingRouter.post("/cart/remove", async (req, res, next) => {
+cartRouter.post("/remove", async (req, res, next) => {
     try {
         const check = await shopModel.findById(req.body._id)
         if (check && check.quantity > 1) {
@@ -35,13 +35,13 @@ shoppingRouter.post("/cart/remove", async (req, res, next) => {
     }
 })
 
-shoppingRouter.get("/cart", async (req, res, next) => {
+cartRouter.get("/cart", async (req, res, next) => {
     try {
-        const shoppingcart = await shopModel.find().populate()
+        const shoppingcart = await shopModel.find().populate("product")
         res.send(shoppingcart)
     } catch (error) {
         console.log(error)
     }
 })
 
-export default shoppingRouter
+export default cartRouter
