@@ -20,7 +20,7 @@ cartRouter.post("/add", async (req, res, next) => {
         }
     } catch (error) {
         console.log(error)
-        next(error)
+		next(error)
     }
 })
 
@@ -46,13 +46,13 @@ cartRouter.post("/remove", async (req, res, next) => {
         }
     } catch (error) {
         console.log(error)
-        next(error)
+		next(error)
     }
 })
 
 cartRouter.get("/", async (req, res, next) => {
     try {
-        const shoppingcart = await shopModel.find().populate("product")
+        const shoppingcart = await shopModel.find().populate("product_id")
         res.send(shoppingcart)
     } catch (error) {
         console.log(error)
