@@ -6,6 +6,7 @@ import createError from "http-errors"
 import { validationResult } from "express-validator"
 import uniqid from "uniqid"
 import path from "path"
+import ProductModel from "../productSchema.js"
 
 const productsRouter = express.Router()
 
@@ -39,19 +40,11 @@ productsRouter.get("/:id", async (req, res, next) => {
     }
 })
 
-productsRouter.post("/", productValidation, async (req, res, next) => {
+productsRouter.post("/", async (req, res, next) => {
     try {
-        const products = await getProducts()
-        const errors = validationResult(req)
+        const newProduct = await ProductModel.findproduct(req.params.id)
 
-        if (errors.isEmpty()) {
-            const product = { ...req.body, _id: uniqid(), createdOn: new Date(), reviews: [] }
-            products.push(product)
-            await writeProducts(products)
-            res.status(201).send(product)
-        } else {
-            next(createError(400, errors))
-        }
+        product ? res.send(product) : next(createError(400, "Error creating product, try again!")
     } catch (error) {
         next(error)
     }
