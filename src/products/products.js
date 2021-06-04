@@ -44,7 +44,8 @@ productsRouter.post("/", async (req, res, next) => {
     try {
         const newProduct = await ProductModel.findproduct(req.params.id)
 
-        product ? res.send(product) : next(createError(400, "Error creating product, try again!")
+        newProduct ? res.send(newProduct) : next(createError(400, "Error creating product, try again!"))
+
     } catch (error) {
         next(error)
     }
