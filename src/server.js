@@ -60,7 +60,7 @@ server.use(forbiddenErrorHandler)
 server.use(notFoundErrorHandler)
 server.use(catchAllErrorHandler)
 
-mongoose.connect("mongodb://localhost:27017/demobase", { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose.connect(process.env.MONGO_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     server.listen(port, () => {
         console.table(listEndpoints(server))
         console.log("server is running on port: ", port)
