@@ -35,7 +35,7 @@ cartRouter.post("/remove", async (req, res, next) => {
     }
 })
 
-cartRouter.get("/cart", async (req, res, next) => {
+cartRouter.get("/", async (req, res, next) => {
     try {
         const shoppingcart = await shopModel.find().populate("product")
         res.send(shoppingcart)
