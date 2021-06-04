@@ -9,8 +9,9 @@ const productRouter = express.Router()
 productRouter.get("/", async (req, res, next) => {
     try {
         const query = q2m(req.query)
+        console.log(query)
         const total = await ProductModel.countDocuments(query.criteria)
-        const limit = 5
+        const limit = 25
         const result = await ProductModel.find(query.criteria)
             .sort(query.options.sort)
             .skip(query.options.skip || 0)
