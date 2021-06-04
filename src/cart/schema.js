@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const { Schema, model } = mongoose
 
 const shopSchema = new Schema({
-    product: String,
+    product_id: { type: Schema.Types.ObjectId, ref: "Product" },
     quantity: { type: Number, default: 1 }
 })
 
