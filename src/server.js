@@ -3,6 +3,7 @@ import cors from "cors"
 import listEndpoints from "express-list-endpoints"
 import productRoutes from "./products/products.js"
 import reviewRoutes from "./reviews/review.js"
+import cartRoutes from "./cart/index.js"
 import {
     badRequestErrorHandler,
     forbiddenErrorHandler,
@@ -56,6 +57,7 @@ server.use(logger)
 
 server.use("/products", productRoutes)
 server.use("/reviews", reviewRoutes)
+server.use("/cart", cartRoutes)
 
 server.use(badRequestErrorHandler)
 server.use(forbiddenErrorHandler)
