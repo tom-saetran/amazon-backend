@@ -52,7 +52,7 @@ cartRouter.post("/remove", async (req, res, next) => {
 
 cartRouter.get("/", async (req, res, next) => {
     try {
-        const shoppingcart = await shopModel.find({}, { reviews: 0 }).populate("product_id")
+        const shoppingcart = await shopModel.find({}, { product_id.reviews: 0 }).populate("product_id")
         res.send(shoppingcart)
     } catch (error) {
         console.log(error)
