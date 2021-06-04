@@ -6,6 +6,7 @@ import createError from "http-errors"
 import { validationResult } from "express-validator"
 import uniqid from "uniqid"
 import { write } from "fs-extra"
+import ReviewModel from "./schema.js"
 
 const reviewsRouter = express.Router()
 

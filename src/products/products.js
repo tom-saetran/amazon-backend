@@ -4,9 +4,8 @@ import { getProducts, writeProducts, writeProductImages } from "../helpers/files
 import { productValidation } from "../helpers/validation.js"
 import createError from "http-errors"
 import { validationResult } from "express-validator"
-import uniqid from "uniqid"
 import path from "path"
-import ProductModel from "../productSchema.js"
+import ProductModel from "./schema.js"
 
 const productsRouter = express.Router()
 
@@ -15,13 +14,21 @@ productsRouter.get("/", async (req, res, next) => {
         const products = await getProducts()
         if (req.query.category) {
             // ?category=filtered
-            const filteredProducts = products.filter(products => products.category.toLowerCase().includes(req.query.category.toLowerCase()))
-            filteredProducts.length > 0 ? res.status(200).send(filteredProducts) : next(createError(404, `No products with category: ${req.query.category}`))
+            const filteredProducts = products.filter(products =>
+                products.category.toLowerCase().includes(req.query.category.toLowerCase())
+            )
+            filteredProducts.length > 0
+                ? res.status(200).send(filteredProducts)
+                : next(createError(404, `No products with category: ${req.query.category}`))
         }
         if (req.query.name) {
             // ?name=filtered
-            const filteredProducts = products.filter(products => products.name.toLowerCase().includes(req.query.name.toLowerCase()))
-            filteredProducts.length > 0 ? res.status(200).send(filteredProducts) : next(createError(404, `No products with title: ${req.query.name}`))
+            const filteredProducts = products.filter(products =>
+                products.name.toLowerCase().includes(req.query.name.toLowerCase())
+            )
+            filteredProducts.length > 0
+                ? res.status(200).send(filteredProducts)
+                : next(createError(404, `No products with title: ${req.query.name}`))
         } else {
             products.length > 0 ? res.send(products) : next(createError(404, "No products available!"))
         }
@@ -34,7 +41,9 @@ productsRouter.get("/:id", async (req, res, next) => {
     try {
         const products = await getProducts()
         const result = products.find(product => product._id === req.params.id)
-        result ? res.status(200).send(result) : next(createError(404, "Product not found, check your ID and try again!"))
+        result
+            ? res.status(200).send(result)
+            : next(createError(404, "Product not found, check your ID and try again!"))
     } catch (error) {
         next(error)
     }
@@ -44,7 +53,7 @@ productsRouter.post("/", async (req, res, next) => {
     try {
         const newProduct = await ProductModel.findproduct(req.params.id)
 
-        product ? res.send(product) : next(createError(400, "Error creating product, try again!")
+        product ? res.send(product) : createError(400, "Error creating product, try again!")
     } catch (error) {
         next(error)
     }
@@ -96,7 +105,9 @@ productsRouter.post("/:id/uploadImage", multer().single("productImage"), async (
             else {
                 await writeProductImages(req.params.id + path.extname(req.file.originalname), req.file.buffer)
                 const product = products.find(product => product._id === req.params.id)
-                product.image = `${req.protocol}://${req.get("host")}/images/productImages/${req.params.id}${path.extname(req.file.originalname)}`
+                product.image = `${req.protocol}://${req.get("host")}/images/productImages/${
+                    req.params.id
+                }${path.extname(req.file.originalname)}`
                 result.push(product)
                 writeProducts(result)
                 res.status(200).send("Image uploaded successfully")

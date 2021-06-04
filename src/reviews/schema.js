@@ -1,16 +1,15 @@
 import mongoose from "mongoose"
 import createError from "http-errors"
 
-const { Schema, Model } = mongoose
+const { Schema, model } = mongoose
 
 const ReviewSchema = new Schema(
     {
         rate: { type: Number, min: 0, max: 5, required: true },
-        comment: { type: String, required: true },
+        comment: { type: String, required: true }
     },
-    {timestamps: true}
+    { timestamps: true }
 )
-
 
 ReviewSchema.post("validate", (error, doc, next) => {
     if (error) {
@@ -21,4 +20,4 @@ ReviewSchema.post("validate", (error, doc, next) => {
     }
 })
 
-export default new Model ("Review", ReviewSchema)
+export default model("Review", ReviewSchema)
